@@ -1,0 +1,71 @@
+#include <iostream>
+using namespace std;
+class Set
+{
+	double *Mas;
+	unsigned int Size;
+public:
+	Set(double *p, unsigned int n)
+	{
+		Mas = new double[n];
+		Size = n;
+		for (unsigned int i = 0; i < n; ++i)
+			Mas[i] = p[i];
+	}
+	Set()
+	{
+		Mas = 0;
+		Size = 0;
+	}
+	~Set()
+	{
+		if (Size > 0) delete[] Mas;
+	}
+	int GettingSize()
+	{
+		return Size;
+	}
+	void print()
+	{
+		for (unsigned int i = 0; i < Size; ++i)
+			cout << Mas[i] << " ";
+	}
+	Set & operator =(Set& v2)
+	{
+		Size = v2.Size;
+		Mas = new double[Size];
+		for (unsigned int i = 0; i < Size; ++i) Mas[i] = v2.Mas[i];
+		return *this;
+	}
+	double& operator[](unsigned int i)
+	{
+		return Mas[i];
+	}
+	friend double* & operator -(double *x, Set& v2);
+};
+	double* & operator-(double *x, Set& v2)
+	{
+		for (unsigned int i = 0; i < v2.GettingSize(); ++i)
+			x[i]-=v2[i];
+		return x;
+	};
+	int main()
+	{
+		double *m;
+		unsigned int s;
+		cout << "Input size" << endl;
+		cin >> s;
+		m = new double[s];
+		cout << "Input mas" << endl;
+		for (unsigned int i = 0; i < s; ++i) cin >> m[i];
+		Set V1(m, s);
+		cout << "Massiv:" << endl;
+		for (unsigned int i = 0; i < s; ++i)
+			cout << V1[i] << " ";
+		Set V3(m - V1, s);
+		Set V2 = V3;
+		cout << "\nResult:" << endl;
+		V2.print();
+		system("pause");
+		return 0;
+};
